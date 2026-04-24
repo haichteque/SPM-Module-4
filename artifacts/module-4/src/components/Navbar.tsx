@@ -1,7 +1,7 @@
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { useRole } from "./RoleContext";
 import { freelancers } from "../data/freelancers";
-import { Briefcase, TrendingUp, Users, FolderKanban, LogOut } from "lucide-react";
+import { Briefcase } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
-  const [location] = useLocation();
   const { role, setRole, activeFreelancerId, setActiveFreelancerId } = useRole();
 
   const activeFreelancer = freelancers.find(f => f.id === activeFreelancerId);
@@ -30,26 +29,10 @@ export function Navbar() {
             SkillMatch
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
-            {role === "Freelancer" ? (
-              <>
-                <Link href="/recommended-jobs" className={`hover:text-foreground transition-colors ${location === "/recommended-jobs" || location === "/" ? "text-foreground" : ""}`}>
-                  Recommended Jobs
-                </Link>
-                <Link href="/trending-skills" className={`hover:text-foreground transition-colors ${location === "/trending-skills" ? "text-foreground" : ""}`}>
-                  Trending Skills
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href="/top-matches" className={`hover:text-foreground transition-colors ${location === "/top-matches" || location === "/" ? "text-foreground" : ""}`}>
-                  Top Matches
-                </Link>
-                <Link href="/my-projects" className={`hover:text-foreground transition-colors ${location === "/my-projects" ? "text-foreground" : ""}`}>
-                  My Projects
-                </Link>
-              </>
-            )}
+          <div className="hidden md:flex items-center text-sm font-medium text-muted-foreground">
+            <span className="text-foreground">
+              {role === "Freelancer" ? "Freelancer Dashboard" : "Find Talent"}
+            </span>
           </div>
         </div>
 
