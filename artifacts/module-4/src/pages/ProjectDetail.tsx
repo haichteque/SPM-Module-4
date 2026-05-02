@@ -1,6 +1,5 @@
 import { useRoute } from "wouter";
-import { projects } from "../data/projects";
-import { freelancers } from "../data/freelancers";
+import { useData } from "../hooks/useData";
 import { rankFreelancersForProject } from "../lib/matching";
 import { FreelancerCard } from "../components/FreelancerCard";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +8,12 @@ import { Clock, DollarSign, Calendar, Users } from "lucide-react";
 
 export default function ProjectDetail() {
   const [, params] = useRoute("/project/:id");
+  const { freelancers, projects, loading } = useData();
   const project = projects.find(p => p.id === params?.id);
+
+  if (loading) {
+    return <div className="p-12 text-center text-xl font-medium">Loading project details...</div>;
+  }
 
   if (!project) {
     return <div className="p-12 text-center text-xl font-medium">Project not found</div>;

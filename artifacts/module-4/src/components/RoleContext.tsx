@@ -1,5 +1,4 @@
 import { useState, createContext, useContext, ReactNode } from "react";
-import { freelancers } from "../data/freelancers";
 
 export type Role = "Freelancer" | "Client";
 
@@ -14,7 +13,7 @@ const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
 export function RoleProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<Role>("Freelancer");
-  const [activeFreelancerId, setActiveFreelancerId] = useState<string>(freelancers[0]?.id || "1");
+  const [activeFreelancerId, setActiveFreelancerId] = useState<string>("");
 
   return (
     <RoleContext.Provider value={{ role, setRole, activeFreelancerId, setActiveFreelancerId }}>

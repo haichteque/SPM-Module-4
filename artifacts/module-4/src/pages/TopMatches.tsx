@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { projects } from "../data/projects";
-import { freelancers } from "../data/freelancers";
+import { useData } from "../hooks/useData";
 import { rankFreelancersForProject } from "../lib/matching";
 import { FreelancerCard } from "../components/FreelancerCard";
 import { EmptyState } from "../components/EmptyState";
@@ -18,10 +17,20 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
 export default function TopMatches() {
-  const [selectedProjectId, setSelectedProjectId] = useState<string>(projects[0].id);
+  const { freelancers, projects, loading } = useData();
+  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   const [hideOverBudget, setHideOverBudget] = useState(false);
 
-  const selectedProject = projects.find(p => p.id === selectedProjectId);
+  const selectedProject = projects.find(p => p.id === selectedProjectId) || projects[0];
+  
+  // Set initial selected project once data loads
+  if (!selectedProjectId && projects.length > 0) {
+    setSelectedProjectId(projects[0].id);
+  }
+
+  if (loading) {
+    return <div className="p-12 text-center">Loading talent data...</div>;
+  }
   
   const rankedFreelancers = selectedProject 
     ? rankFreelancersForProject(selectedProject, freelancers)

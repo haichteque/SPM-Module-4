@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { useRole } from "./RoleContext";
-import { freelancers } from "../data/freelancers";
+import { useData } from "../hooks/useData";
 import { Briefcase } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,13 @@ import {
 
 export function Navbar() {
   const { role, setRole, activeFreelancerId, setActiveFreelancerId } = useRole();
+  const { freelancers } = useData();
 
-  const activeFreelancer = freelancers.find(f => f.id === activeFreelancerId);
+  const activeFreelancer = freelancers.find(f => f.id === activeFreelancerId) || freelancers[0];
+  
+  if (!activeFreelancerId && freelancers.length > 0) {
+    setActiveFreelancerId(freelancers[0].id);
+  }
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

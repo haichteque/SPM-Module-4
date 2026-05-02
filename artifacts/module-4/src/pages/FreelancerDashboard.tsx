@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Sparkles, TrendingUp, GraduationCap } from "lucide-react";
 import { useRole } from "../components/RoleContext";
-import { projects } from "../data/projects";
-import { freelancers } from "../data/freelancers";
+import { useData } from "../hooks/useData";
 import {
   recommendProjectsForFreelancer,
   getTrendingSkills,
@@ -19,10 +18,15 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export default function FreelancerDashboard() {
-  const { activeFreelancerId } = useRole();
-  const activeFreelancer = freelancers.find((f) => f.id === activeFreelancerId);
+  const { activeFreelancerId, setActiveFreelancerId } = useRole();
+  const { freelancers, projects, loading } = useData();
+  const activeFreelancer = freelancers.find((f) => f.id === activeFreelancerId) || freelancers[0];
   const [hideOverBudget, setHideOverBudget] = useState(false);
   const [learningSkill, setLearningSkill] = useState<string | null>(null);
+
+  if (loading) {
+    return <div className="p-12 text-center">Loading dashboard...</div>;
+  }
 
   if (!activeFreelancer) return null;
 

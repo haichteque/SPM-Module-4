@@ -1,5 +1,5 @@
 import { useRoute } from "wouter";
-import { freelancers } from "../data/freelancers";
+import { useData } from "../hooks/useData";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, Briefcase, Mail } from "lucide-react";
@@ -8,7 +8,12 @@ import { Button } from "@/components/ui/button";
 
 export default function FreelancerProfile() {
   const [, params] = useRoute("/freelancer/:id");
+  const { freelancers, loading } = useData();
   const freelancer = freelancers.find(f => f.id === params?.id);
+
+  if (loading) {
+    return <div className="p-12 text-center text-xl font-medium">Loading profile...</div>;
+  }
 
   if (!freelancer) {
     return <div className="p-12 text-center text-xl font-medium">Freelancer not found</div>;
