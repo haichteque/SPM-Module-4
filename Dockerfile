@@ -22,6 +22,10 @@ COPY --from=build /app/artifacts/module-4/dist ./artifacts/module-4/dist
 COPY --from=build /app/lib/db/package.json ./lib/db/
 COPY --from=build /app/lib/db/src ./lib/db/src
 COPY --from=build /app/lib/api-zod/package.json ./lib/api-zod/
+COPY --from=build /app/lib/api-client-react/package.json ./lib/api-client-react/
+COPY --from=build /app/lib/api-spec/package.json ./lib/api-spec/
+COPY --from=build /app/scripts/package.json ./scripts/
+COPY --from=build /app/artifacts/mockup-sandbox/package.json ./artifacts/mockup-sandbox/
 
 # Only install production dependencies
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
